@@ -10,6 +10,8 @@ Install
 
 How to use
 ------------
+Generate new payment:
+
 .. code:: python
 
     from webpay_by.client import WebpayClient
@@ -37,3 +39,22 @@ How to use
 
     redirect_url = resopnse["redirectUrl"]
 
+Process webhook:
+
+.. code:: python
+
+    def post(self, request, *args, **kwargs):
+        payload = request.body
+        end_statuses = [
+            WebpayClient.PaymentType.Completed,
+            WebpayClient.PaymentType.Authorized,
+            WebpayClient.PaymentType.Declined,
+        ]
+        if int(payload["payment_type"]) in end_statuses:
+            if self.client.check_webhook_sign(payload):
+                # do code to finish payment
+                return HttpResponse(status=200)
+            else:
+                logger.error(f'Calculated signature doesn\'t match')
+                return HttpResponse(status=400)
+        return HttpResponse(status=400)
