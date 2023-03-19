@@ -35,19 +35,21 @@ def get_package_data(package):
 
 
 setup(
-    name="webpay_be",
-    version=get_version("webpay_be"),
-    url="https://github.com/intsynko/webpay_be",
+    name="webpay_by",
+    version=get_version("webpay_by"),
+    url="https://github.com/intsynko/python_webpay_by",
     license="MIT",
     description="Simple python client for webpay.by api",
     long_description_content_type="text/x-rst",
     long_description=open(join(dirname(__file__), "README.rst"), encoding="utf-8").read(),
     author="Intsyn Konstantin",
     author_email="intsyn@mail.ru",
-    packages=get_packages("webpay_be"),
-    package_data=get_package_data("webpay_be"),
+    packages=get_packages("webpay_by"),
+    package_data=get_package_data("webpay_by"),
     include_package_data=True,
-    install_requires=[],
+    install_requires=[
+        "requests"
+    ],
     python_requires=">=2.7",
     zip_safe=False,
     platforms="any",

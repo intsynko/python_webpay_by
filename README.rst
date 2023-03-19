@@ -12,7 +12,7 @@ How to use
 ------------
 .. code:: python
 
-    from webpay_be.client import WebpayClient
+    from webpay_by.client import WebpayClient
 
     SANBOX = 'https://securesandbox.webpay.by'
     secret_key = 'secret_key'

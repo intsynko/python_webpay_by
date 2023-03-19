@@ -3,7 +3,7 @@ import unittest
 from unittest.mock import patch
 from unittest import mock
 
-from webpay_be.client import WebpayClient
+from webpay_by.client import WebpayClient
 
 
 class TestWebpayClient(unittest.TestCase):
