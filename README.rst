@@ -20,7 +20,7 @@ Generate new payment:
     secret_key = 'secret_key'
 
     cilent = WebpayClient(is_test=True, option_3ds="auto", store_id="123", store_name="Your shop display name",
-                          version=2, language_id="russian", secret_key=secret_key, secret_key=SANBOX)
+                          version=2, language_id="russian", secret_key=secret_key, url=SANBOX)
 
     resopnse = client.generate_payment(**{
         "return_url": "https://example.com/succees_url",
