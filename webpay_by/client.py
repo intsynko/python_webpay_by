@@ -30,13 +30,15 @@ class WebpayClient:
         self.secret_key = secret_key
 
     def _process_float_for_sign(self, num):
-        return "".join([i for i in str(num).split(".") if i != "0"])
+        if num == int(num):
+            return str(int(num))
+        return str(num)
 
     def _get_sign_key_for_webhook(self, data):
         fields_to_sign = [
             str(data["batch_timestamp"]),
             data["currency_id"],
-            self._process_float_for_sign(data["amount"]),
+            data["amount"],
             data["payment_method"],
             data["order_id"],
             data["site_order_id"],
@@ -51,7 +53,7 @@ class WebpayClient:
 
     def check_webhook_sign(self, data):
         sign_key = self._get_sign_key_for_webhook(data)
-        return data["wsb_signature"] == hashlib.sha1(sign_key.encode()).hexdigest()
+        return data["wsb_signature"] == hashlib.md5(sign_key.encode()).hexdigest()
 
     def _get_sign_key(self, data: dict):
         return "".join([data["seed"],
@@ -79,6 +81,7 @@ class WebpayClient:
         sign_key = self._get_sign_key(data)
         data["signature"] = hashlib.sha1(sign_key.encode()).hexdigest()
         data['total'] = float(data['total'])
+        data['invoice_item_price'] = [float(item) for item in data['invoice_item_price']]
         data = {f"wsb_{k}": v for k,v in data.items()}
         response = requests.post(url=f"{self.url}/api/v1/payment", json=data)
         try:

@@ -31,7 +31,7 @@ Generate new payment:
         "invoice_itemname": ["a", "b"],
         "invoice_item_quantity": [1,2],
         "invoice_item_price": [4.0, 6.0],
-        "total": "10",
+        "total": 10.0,
         "customer_name": "client name (will be displayed in payment form)", # optional
         "email": "client@mail.by",
         ... # other optional params from documentation
@@ -45,13 +45,14 @@ Process webhook:
 
     def post(self, request, *args, **kwargs):
         payload = request.body
+        data = {x.split('=')[0]: x.split('=')[1] for x in payload.decode('utf-8').split('&')}
         end_statuses = [
             WebpayClient.PaymentType.Completed,
             WebpayClient.PaymentType.Authorized,
             WebpayClient.PaymentType.Declined,
         ]
-        if int(payload["payment_type"]) in end_statuses:
-            if self.client.check_webhook_sign(payload):
+        if int(data["payment_type"]) in end_statuses:
+            if self.client.check_webhook_sign(data):
                 # do code to finish payment
                 return HttpResponse(status=200)
             else:
